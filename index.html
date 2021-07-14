@@ -1,0 +1,129 @@
+<html>
+    <head>
+        <title> My Portfolio</title>
+        <link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+
+        body{
+            background-color: #659DBD;
+            margin: 5px;
+            padding: 5px;
+            color:#fff;
+            font-size:22px;
+            font-family: 'Lato', sans-serif;
+            text-align: center;
+        }
+
+        .h1-welcome{
+            margin-top: -10px;
+            padding: 12px;
+            font-size: 37px;
+            color:#FFF;
+        }
+        
+        .body-image{
+            background-color:#FFF;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 5px;
+        }
+        
+        .loader {
+        border: 10px solid #f3f3f3;
+        border-radius: 50%;
+        border-top: 10px solid blue;
+        border-right: 10px solid green;
+        border-bottom: 10px solid red;
+        width: 50px;
+        height: 50px;
+        -webkit-animation: spin 2s linear infinite;
+        animation: spin 2s linear infinite;
+        position: absolute;
+        left:50%;
+        top:50%;
+        }
+
+        @-webkit-keyframes spin {
+        0% { -webkit-transform: rotate(0deg); }
+        100% { -webkit-transform: rotate(360deg); }
+        }
+
+        @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+        }
+
+        
+           
+    </style>
+    </head>
+    <body>
+    <!-- This is for Spinner-->
+   <center> <div id="loading" class="loader"></div> </center>
+    <!-- Spinner section end -->
+    <div class="container-main" id="containerMain" hidden >
+        <h1 class="h1-welcome">
+            <u>Welcome To My Portfolio</u>
+        </h1>
+
+        <img 
+        class="body-image" 
+        id="profileImage"
+        height="250" 
+        width="250" />
+
+        <h2 id="fullName"> </h2>
+
+        <p id="bio">  </p>
+
+        <p>
+            Check me on <a id="userfulLink" target="_blank">GITHUB</a> 
+        </p>
+
+        <p id="followerInfo">  </p>
+
+        <p id="myPortfolio"> </p>
+        <a class="twitter-timeline" data-width="300" data-height="400" href="https://twitter.com/prabin01180?ref_src=twsrc%5Etfw">Tweets by prabin01180</a> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+        <hr/>
+        <h5 style="color:#ffec00; font-size:24px;"> My Awesome Projects </h5>
+        <hr/>
+        <p id="reposNameList" style="font-size:22px;"> </p>
+      
+    </div>
+    <script>
+        fetch("https://api.github.com/users/prabinlamichhane70")
+        .then(response => response.json())
+        .then(function (data){
+            console.log (data)
+
+            let followersCount=data["followers"]
+            let followerInformation="I have been followed by " +JSON.stringify(followersCount)+" awasome poeple on github"
+
+            document.getElementById('profileImage').src=data['avatar_url'];
+            document.getElementById('fullName').textContent=data['name'];
+            document.getElementById("bio").textContent=data['bio'];
+            document.getElementById("followerInfo").textContent = followerInformation;
+            document.getElementById("userfulLink").href=data['html_url'];
+            document.getElementById("containerMain").hidden=false;
+            document.getElementById("loading").hidden=true;
+            } );
+            
+       fetch("https://api.github.com/users/prabinlamichhane70/repos")
+        .then(response=>response.json())
+        .then (function(repos)
+        {
+        console.log(repos);
+        for(repoList=0; repoList<repos.length; repoList++){
+        /*console.log(repos[repoList]);*/
+        
+        
+        document.getElementById('reposNameList').textContent += repos [repoList]['name'] + " | ";
+
+        }
+        });
+
+    </script>
+    </body>
+</html>
